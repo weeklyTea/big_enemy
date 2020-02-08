@@ -2,14 +2,16 @@ import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, addEffect, useFrame } from "react-three-fiber";
 
-const maxSpeed = 40 // 40 m/sec === 144 km/h
+const maxSpeed = 70 // 40 m/sec === 144 km/h
 const accel = 10
 const friction = 6
-const rotateSpeed = THREE.Math.degToRad(30)
+const rotateSpeed = THREE.Math.degToRad(70)
+const skiddingC = 0.8
 
 const state = {
-  ship: {
-    angle: Math.PI / 2,
+  player: {
+    moveDir: new THREE.Vector3(0, 1, 0),
+    lookDir: new THREE.Vector3(0, 1, 0),
     position: new THREE.Vector3(),
     curSpeed: 0
   },
@@ -29,8 +31,8 @@ function Ship() {
 
   useFrame(() => {
     const mesh = ref.current
-    mesh.rotation.z = state.ship.angle
-    mesh.position.copy(state.ship.position)
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(1,0,0), state.player.lookDir.clone().normalize())
+    mesh.position.copy(state.player.position)
   });
 
   return (
@@ -45,33 +47,38 @@ let t1 = performance.now();
 function mainCycle(t2) {
   const tDiff = (t2 - t1) / 1000;
   t1 = t2;
+  const { right, left, up, } = state.keysPressed;
 
-  const { right, left, up, down } = state.keysPressed;
-  let curSpeed = state.ship.curSpeed;
-  const coef = curSpeed / maxSpeed;
+  let curSpeed = state.player.curSpeed;
   if (right) {
-    state.ship.angle -= rotateSpeed * tDiff * coef;
+    state.player.lookDir.applyEuler(new THREE.Euler(0, 0, -rotateSpeed * tDiff))
   }
   if (left) {
-    state.ship.angle += rotateSpeed * tDiff * coef;
+    state.player.lookDir.applyEuler(new THREE.Euler(0, 0, rotateSpeed * tDiff))
   }
 
-  if (up || down) {
-    const a = (up ? accel : -accel) * tDiff;
-    if (Math.abs(curSpeed + a) <= maxSpeed) {
-      state.ship.curSpeed += a;
+  if (up) {
+    if (Math.abs(curSpeed + accel) <= maxSpeed) {
+      state.player.curSpeed += accel * tDiff;
     }
-  } else if (!up && !down) {
-    if (Math.abs(curSpeed) < 0.001) state.ship.curSpeed = 0;
+
+    const { lookDir, moveDir } = state.player
+    if (lookDir.angleTo(moveDir) < 0.01) {
+      state.player.moveDir = lookDir
+    } else {
+      state.player.moveDir.lerp(lookDir, skiddingC * tDiff)
+    }
+  } else if (!up) {
+    if (Math.abs(curSpeed) < 0.01) state.player.curSpeed = 0;
     else {
       const sign = curSpeed < 0 ? -1 : 1;
-      state.ship.curSpeed -= friction * sign * tDiff;
+      state.player.curSpeed -= friction * sign * tDiff;
     }
   }
-  const { position, angle } = state.ship;
-  curSpeed = state.ship.curSpeed;
-  state.ship.position.setX(position.x + curSpeed * tDiff * Math.cos(angle));
-  state.ship.position.setY(position.y + curSpeed * tDiff * Math.sin(angle));
+  const { position, moveDir } = state.player;
+  curSpeed = state.player.curSpeed;
+  state.player.position.setX(position.x + curSpeed * tDiff * moveDir.x);
+  state.player.position.setY(position.y + curSpeed * tDiff * moveDir.y);
 }
 
 function App() {
