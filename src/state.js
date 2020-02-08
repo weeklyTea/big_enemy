@@ -34,15 +34,7 @@ export const state = {
       curSpeed: 0,
     },
   },
-  bullets: [
-  //   {
-  //   startPos: new THREE.Vector3(0, 0, 0),
-  //   startTime: performance.now(),
-  //   position: new THREE.Vector3(0, 0, 0),
-  //   dir: new THREE.Vector3(0.5, 0.5, 0),
-  //   playerId: 2
-  // }
-],
+  bullets: [],
   keysPressed: {
     1: {
       left: false,

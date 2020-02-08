@@ -61,6 +61,19 @@ function moveBullet(id, curTime) {
   state.bullets[id].position.z = speed * Math.sin(angle) * shotTDiff - (gravity * shotTDiff * shotTDiff) / 2
 }
 
+function createBullet(pId, forceUpdate) {
+  const { position, lookDir } = state.players[pId]
+    state.keysPressed[pId].shot = false
+    state.bullets.push({
+      startPos: position.clone(),
+      startTime: performance.now(),
+      position: position.clone(),
+      dir: lookDir.clone(),
+      playerId: 2
+    })
+    forceUpdate()
+}
+
 let t1 = performance.now();
 export const mainCycle = (forceUpdate) => function (t2) {
   const tDiff = (t2 - t1) / 1000; // Time diff between current and last frames in seconds
@@ -70,15 +83,10 @@ export const mainCycle = (forceUpdate) => function (t2) {
   movePlayer(2, tDiff)
 
   if (state.keysPressed[1].shot) {
-    state.keysPressed[1].shot = false
-    state.bullets.push({
-      startPos: new THREE.Vector3(-100, 0, 0),
-      startTime: performance.now(),
-      position: new THREE.Vector3(-100, 0, 0),
-      dir: new THREE.Vector3(0.5, 0.5, 0),
-      playerId: 2
-    })
-    forceUpdate()
+    createBullet(1, forceUpdate)
+  }
+  if (state.keysPressed[2].shot) {
+    createBullet(2, forceUpdate)
   }
 
 
