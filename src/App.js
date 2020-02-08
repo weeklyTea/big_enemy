@@ -2,11 +2,11 @@ import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, addEffect, useFrame } from "react-three-fiber";
 
-const maxSpeed = 70 // 40 m/sec === 144 km/h
+const maxSpeed = 70 // Meters per second.
 const accel = 10
-const friction = 6
+const friction = 0.7 // Decrease in 'friction' times curSpeed each second.
 const rotateSpeed = THREE.Math.degToRad(70)
-const skiddingC = 0.8
+const skiddingC = 0.8 // Should be dependent on player weight
 
 const state = {
   player: {
@@ -45,7 +45,7 @@ function Ship() {
 
 let t1 = performance.now();
 function mainCycle(t2) {
-  const tDiff = (t2 - t1) / 1000;
+  const tDiff = (t2 - t1) / 1000; // Time diff in seconds
   t1 = t2;
   const { right, left, up, } = state.keysPressed;
 
@@ -58,27 +58,26 @@ function mainCycle(t2) {
   }
 
   if (up) {
-    if (Math.abs(curSpeed + accel) <= maxSpeed) {
+    if (curSpeed + accel <= maxSpeed) {
       state.player.curSpeed += accel * tDiff;
     }
 
     const { lookDir, moveDir } = state.player
-    if (lookDir.angleTo(moveDir) < 0.01) {
+    if (lookDir.angleTo(moveDir) < 0.05) {
       state.player.moveDir = lookDir
     } else {
       state.player.moveDir.lerp(lookDir, skiddingC * tDiff)
     }
   } else if (!up) {
-    if (Math.abs(curSpeed) < 0.01) state.player.curSpeed = 0;
-    else {
-      const sign = curSpeed < 0 ? -1 : 1;
-      state.player.curSpeed -= friction * sign * tDiff;
-    }
+      const d = state.player.curSpeed * friction * tDiff
+      if (state.player.curSpeed - d < 0 || d < 0.01) state.player.curSpeed = 0
+      else state.player.curSpeed -= d
   }
-  const { position, moveDir } = state.player;
-  curSpeed = state.player.curSpeed;
-  state.player.position.setX(position.x + curSpeed * tDiff * moveDir.x);
-  state.player.position.setY(position.y + curSpeed * tDiff * moveDir.y);
+
+  const { position, moveDir } = state.player
+  curSpeed = state.player.curSpeed
+  state.player.position.setX(position.x + curSpeed * tDiff * moveDir.x)
+  state.player.position.setY(position.y + curSpeed * tDiff * moveDir.y)
 }
 
 function App() {
