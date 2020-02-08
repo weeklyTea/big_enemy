@@ -1,15 +1,16 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, addEffect, useFrame } from "react-three-fiber";
+import DatGui, { DatNumber } from 'react-dat-gui';
 
-const maxSpeed = 70 // Meters per second.
-const accel = 10
-const friction = 0.2 // Decrease in 'friction' times curSpeed each second.
-const rotateSpeed = THREE.Math.degToRad(70)
-const skiddingC = 0.8 // Should be dependent on player weight
 
-const shipLen = 39
-const shipWidth = 8
+const prefereces = {
+  maxSpeed: 70, // Meters per second.
+  accel: 10,
+  friction: 0.2, // Decrease curSpeed in 'friction' times each second.
+  rotateSpeed: THREE.Math.degToRad(70),
+  skiddingC: 0.8 // Should be dependent on player weight
+}
 
 const state = {
   players: {
@@ -53,15 +54,32 @@ function Ship({ pId }) {
   })
 
   return (
-    <mesh ref={ref}>
-      <boxBufferGeometry attach="geometry" args={[shipLen, shipWidth, 2]} />
-      <meshStandardMaterial attach="material" color="#4871b8" />
+    <group ref={ref}>
+      <mesh>
+        <sphereGeometry attach="geometry" args={[8, 32, 32]} />
+        <meshStandardMaterial attach="material" color="#f54242" />
+      </mesh>
+      <mesh position={[11, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]}>
+        <coneBufferGeometry attach="geometry" args={[2, 4, 15]} />
+        <meshStandardMaterial attach="material" color="#f54242" transparent={true} opacity="0.5" />
+      </mesh>
+    </group>
+  );
+}
+
+function Surface () {
+  const ref = useRef();
+  return (
+    <mesh ref={ref} position={[0, 0, -8]}>
+      <planeGeometry attach="geometry" args={[200, 200, 32]} />
+      <meshStandardMaterial attach="material" color="#4287f5" />
     </mesh>
   );
 }
 
 function movePlayer(pId, tDiff) {
   const { right, left, up, } = state.keysPressed[pId];
+  const { maxSpeed, accel, friction, rotateSpeed, skiddingC } = prefereces;
 
   let curSpeed = state.players[pId].curSpeed;
   if (right) {
@@ -166,6 +184,14 @@ function App() {
     }
   }, []);
 
+  const [prefs, updatePrefs] = useState(prefereces);
+  
+  useEffect(() => {
+    console.log(prefs, prefereces);
+    for (let prop in prefs)
+      prefereces[prop] = prefs[prop];
+  }, [prefs]);
+
   useEffect(() => {
     addEffect(mainCycle);
     window.addEventListener("keyup", keyUp);
@@ -173,15 +199,26 @@ function App() {
   }, [keyUp, keyDown]);
 
   return (
-    <Canvas
-      style={{ height: "700px" }}
-      camera={{ fov: 75, position: [0, 0, 300] }}
-    >
-      <ambientLight intensity={0.1} />
-      <pointLight position={[100, 100, 100]} intensity={2.2} />
-      <Ship pId={1}/>
-      <Ship pId={2}/>
-    </Canvas>
+    <div>
+      <DatGui data={prefs} onUpdate={updatePrefs}>
+        <DatNumber path="maxSpeed" label="maxSpeed" min={0} max={400} step={1} />
+        <DatNumber path="accel" label="accel" min={0} max={400} step={1} />
+        <DatNumber path="friction" label="friction" min={0} max={400} step={0.1} />
+        <DatNumber path="rotateSpeed" label="rotateSpeed" min={0} max={360} step={1} />
+        <DatNumber path="skiddingC" label="skiddingC" min={0} max={400} step={0.1} />
+      </DatGui>
+      <Canvas
+        style={{ height: "700px" }}
+        camera={{ fov: 30, position: [0, 0, 300] }}
+        onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
+      >
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 100, 100]} intensity={1.2} />
+        <Surface />
+        <Ship pId={1} />
+        <Ship pId={2} />
+      </Canvas>
+    </div>
   );
 }
 
