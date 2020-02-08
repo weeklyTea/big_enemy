@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Canvas, addEffect } from "react-three-fiber";
 import DatGui, { DatNumber } from 'react-dat-gui';
+import './index.css';
 
 import { mainCycle } from './cycle'
 import { prefereces } from './state'
