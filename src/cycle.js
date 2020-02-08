@@ -15,11 +15,11 @@ function movePlayer(pId, tDiff) {
   }
 
   if (up) {
+    const { lookDir, moveDir } = state.players[pId]
     if (curSpeed + accel <= maxSpeed) {
       state.players[pId].curSpeed += accel * tDiff;
     }
 
-    const { lookDir, moveDir } = state.players[pId]
     if (lookDir.angleTo(moveDir) < 0.02) {
       state.players[pId].moveDir.copy(lookDir)
     } else {
@@ -31,10 +31,23 @@ function movePlayer(pId, tDiff) {
     else state.players[pId].curSpeed -= d
   }
 
-  const { position, moveDir } = state.players[pId]
+  const { position, moveDir, curRadius } = state.players[pId]
   curSpeed = state.players[pId].curSpeed
-  state.players[pId].position.setX(position.x + curSpeed * tDiff * moveDir.x)
-  state.players[pId].position.setY(position.y + curSpeed * tDiff * moveDir.y)
+
+  const rightBorder = preferences.fieldW / 2
+  const leftBorder = -rightBorder
+  const upBorder = preferences.fieldH / 2
+  const bottBorder = - upBorder
+
+  const newX = position.x + curSpeed * tDiff * moveDir.x
+  if (newX + curRadius < rightBorder && newX - curRadius > leftBorder) {
+    state.players[pId].position.setX(newX)
+  }
+  const newY = position.y + curSpeed * tDiff * moveDir.y
+  if (newY + curRadius < upBorder && newY - curRadius > bottBorder) {
+    state.players[pId].position.setY(newY)
+  }
+
 }
 
 let t1 = performance.now();
