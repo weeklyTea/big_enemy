@@ -1,7 +1,11 @@
 import { state } from './state'
 
 export const keyDown = e => {
+  console.log(e.keyCode)
   switch (e.keyCode) {
+    case 32:
+      state.keysPressed[1].shot = true;
+      return;
     case 39:
       state.keysPressed[1].right = true;
       return;

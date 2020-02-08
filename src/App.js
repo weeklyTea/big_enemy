@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Canvas, addEffect } from "react-three-fiber";
 import DatGui, { DatNumber } from 'react-dat-gui';
 import './index.css';
 
 import { mainCycle } from './cycle'
-import { preferences } from './state'
+import { preferences, state } from './state'
 import { Bubble } from './components/Bubble'
 import { Surface } from './components/Surface'
 import { keyDown, keyUp } from './utils'
+import { Bullet } from "./components/Bullet";
+
+function useForceUpdate() {
+  const [, forceUpdate] = useState()
+
+  return useCallback(() => forceUpdate({}), [])
+}
 
 function App() {
   const [prefs, updatePrefs] = useState(preferences);
+
+  const forceUpdate = useForceUpdate()
   
   useEffect(() => {
     for (let prop in prefs)
@@ -18,7 +27,7 @@ function App() {
   }, [prefs]);
 
   useEffect(() => {
-    addEffect(mainCycle);
+    addEffect(mainCycle(forceUpdate));
     window.addEventListener("keyup", keyUp);
     window.addEventListener("keydown", keyDown);
   }, []);
@@ -34,7 +43,7 @@ function App() {
       </DatGui>
       <Canvas
         style={{ height: "700px" }}
-        camera={{ fov: 30, position: [0, 0, 300] }}
+        camera={{ fov: 30, position: [0, 0, 500] }}
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       >
         <ambientLight intensity={0.7} />
@@ -43,6 +52,7 @@ function App() {
         <Surface color={prefs.colorSurf} />
         <Bubble pId={1} color={prefs.color1} />
         <Bubble pId={2} color={prefs.color2} />
+        { state.bullets.map((bullet, idx) => <Bullet key={idx} id={idx} pId={bullet.playerId} />) }
       </Canvas>
     </div>
   );
