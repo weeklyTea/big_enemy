@@ -11,9 +11,13 @@ export function Bubble({ pId }) {
 
   useFrame(() => {
     const mesh = ref.current
-    const { lookDir, position } = state.players[pId]
+    const { lookDir, position, scale } = state.players[pId]
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), lookDir.clone().normalize())
     mesh.position.copy(position)
+    if (scale !== 1) {
+      mesh.scale.multiplyScalar(scale)
+      state.players[pId].scale = 1
+    }
   })
 
   return (

@@ -32,7 +32,7 @@ function movePlayer(pId, tDiff) {
     else state.players[pId].curSpeed -= d
   }
 
-  const { position, moveDir, curRadius } = state.players[pId]
+  const { position, moveDir, radius } = state.players[pId]
   curSpeed = state.players[pId].curSpeed
 
   const rightBorder = preferences.fieldW / 2
@@ -41,11 +41,11 @@ function movePlayer(pId, tDiff) {
   const bottBorder = - upBorder
 
   const newX = position.x + curSpeed * tDiff * moveDir.x
-  if (newX + curRadius < rightBorder && newX - curRadius > leftBorder) {
+  if (newX + radius < rightBorder && newX - radius > leftBorder) {
     state.players[pId].position.setX(newX)
   }
   const newY = position.y + curSpeed * tDiff * moveDir.y
-  if (newY + curRadius < upBorder && newY - curRadius > bottBorder) {
+  if (newY + radius < upBorder && newY - radius > bottBorder) {
     state.players[pId].position.setY(newY)
   }
 
@@ -69,9 +69,24 @@ function createBullet(pId, forceUpdate) {
       startTime: performance.now(),
       position: position.clone(),
       dir: lookDir.clone(),
-      playerId: 2
+      playerId: pId,
+      stale: false, // If true ignore this bullet
     })
     forceUpdate()
+}
+
+function checkCollision(bullet, pId) {
+  const bPos = bullet.position.clone()
+  const bRadius = preferences.bulletRadius
+
+  const pPos = state.players[pId].position.clone()
+  const pRadius = state.players[pId].radius
+
+  if (pPos.distanceTo(bPos) < pRadius + bRadius) {
+    state.players[pId].scale += 0.3
+    bullet.stale = true
+    console.log('HIT!')
+  }
 }
 
 let t1 = performance.now();
@@ -101,7 +116,13 @@ export const mainCycle = (forceUpdate) => function (t2) {
 
   state.bullets.forEach((bullet, i) => {
     moveBullet(i, t2)
+    !bullet.stale && checkCollision(bullet, bullet.playerId === 1 ? 2 : 1)
   })
+
+  // Collisions:
+  state.bullets.forEach((bullet) => {
+  })
+
 
   if(updateIsNeeded) {
     forceUpdate()

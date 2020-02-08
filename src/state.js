@@ -10,10 +10,13 @@ export const preferences = {
   bulletRadius: 3,
   fieldW: 250, // Meters
   fieldH: 150, // Meters
+  radIncrease: 4,
   shot: {
-    gravity: 850,
-    speed: 550, // m/s
-    angle: THREE.Math.degToRad(80),
+    // gravity: 850,
+    // speed: 550, // m/s
+    gravity: 250,
+    speed: 170, // m/s
+    angle: THREE.Math.degToRad(60),
   }
 }
 
@@ -23,15 +26,17 @@ export const state = {
       moveDir: new THREE.Vector3(0, 1, 0),
       lookDir: new THREE.Vector3(-1, 0, 0),
       position: new THREE.Vector3(100, 0, 0),
-      curRadius: preferences.bubbleRadius,
+      radius: preferences.bubbleRadius,
       curSpeed: 0,
+      scale: 1,
     },
     2: {
       moveDir: new THREE.Vector3(0, 1, 0),
       lookDir: new THREE.Vector3(0, 1, 0),
       position: new THREE.Vector3(-100, 0, 0),
-      curRadius: preferences.bubbleRadius,
+      radius: preferences.bubbleRadius,
       curSpeed: 0,
+      scale: 1,
     },
   },
   bullets: [],
