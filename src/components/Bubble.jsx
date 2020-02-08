@@ -4,6 +4,8 @@ import { useFrame } from "react-three-fiber";
 
 import { state, preferences } from '../state'
 
+const colors = [ '#DB4A4A', '#54915F' ];
+
 export function Bubble({ pId }) {
   const ref = useRef()
 
@@ -18,11 +20,11 @@ export function Bubble({ pId }) {
     <group ref={ref}>
       <mesh>
         <sphereGeometry attach="geometry" args={[preferences.bubbleRadius, 32, 32]} />
-        <meshStandardMaterial attach="material" color="#f54242" />
+        <meshLambertMaterial attach="material" color={colors[pId - 1]} />
       </mesh>
       <mesh position={[11, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]}>
         <coneBufferGeometry attach="geometry" args={[2, 4, 15]} />
-        <meshStandardMaterial attach="material" color="#f54242" transparent={true} opacity="0.5" />
+        <meshBasicMaterial attach="material" color={colors[pId - 1]} transparent={true} opacity="0.5" />
       </mesh>
     </group>
   );

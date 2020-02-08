@@ -37,11 +37,12 @@ function App() {
         camera={{ fov: 30, position: [0, 0, 300] }}
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       >
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 100, 100]} intensity={1.2} />
-        <Surface />
-        <Bubble pId={1} />
-        <Bubble pId={2} />
+        <ambientLight intensity={0.7} />
+        <spotLight position={[0, 0, 100]} intensity={0.7} />
+        {/* <pointLight position={[-50, -50, -50]} intensity={0.6} /> */}
+        <Surface color={prefs.colorSurf} />
+        <Bubble pId={1} color={prefs.color1} />
+        <Bubble pId={2} color={prefs.color2} />
       </Canvas>
     </div>
   );
