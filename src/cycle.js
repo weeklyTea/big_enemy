@@ -23,7 +23,8 @@ function movePlayer(pId, tDiff) {
     if (lookDir.angleTo(moveDir) < 0.02) {
       state.players[pId].moveDir.copy(lookDir)
     } else {
-      state.players[pId].moveDir.lerp(lookDir, skiddingC * tDiff)
+      let alfa = curSpeed < 10 ? 1 : skiddingC * tDiff
+      state.players[pId].moveDir.lerp(lookDir, alfa)
     }
   } else if (!up) {
     const d = state.players[pId].curSpeed * friction * tDiff
