@@ -9,6 +9,10 @@ import { Bubble } from './components/Bubble'
 import { Surface } from './components/Surface'
 import { keyDown, keyUp } from './utils'
 import { Bullet } from "./components/Bullet";
+import { Hole } from './components/Hole'
+import { Wave } from './components/Wave'
+
+import './style.css';
 
 function useForceUpdate() {
   const [, forceUpdate] = useState()
@@ -31,7 +35,8 @@ function App() {
     window.addEventListener("keyup", keyUp);
     window.addEventListener("keydown", keyDown);
   }, []);
-
+  const skyColor = "0xffffff";
+  const groundColor = "#1781a4";
   return (
     <div>
       <DatGui data={prefs} onUpdate={updatePrefs}>
@@ -42,17 +47,33 @@ function App() {
         <DatNumber path="skiddingC" label="skiddingC" min={0} max={400} step={0.1} />
       </DatGui>
       <Canvas
-        style={{ height: "700px" }}
-        camera={{ fov: 30, position: [0, -200, 200] }}
+        style={{ height: window.innerHeight }}
+        camera={{ fov: 30, position: [0, -200, 170] }}
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       >
-        <ambientLight intensity={0.7} />
-        <spotLight position={[0, 0, 100]} intensity={0.7} />
-        {/* <pointLight position={[-50, -50, -50]} intensity={0.6} /> */}
+        <ambientLight intensity={0.6} />
+        <spotLight position={[0, 0, 160]} intensity={0.6} />
+        <hemisphereLight skyColor={skyColor} groundColor={groundColor} intensity={0.2} />
         <Surface color={prefs.colorSurf} />
         <Bubble pId={1} color={prefs.color1} />
         <Bubble pId={2} color={prefs.color2} />
         { state.bullets.map((bullet, idx) => <Bullet key={idx} id={idx} pId={bullet.playerId} />) }
+        <Hole size={prefs.holeSize} />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
+        <Wave />
       </Canvas>
     </div>
   );
