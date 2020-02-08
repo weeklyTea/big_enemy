@@ -16,12 +16,24 @@ const state = {
     1: {
       moveDir: new THREE.Vector3(0, 1, 0),
       lookDir: new THREE.Vector3(0, 1, 0),
-      position: new THREE.Vector3(0, 0, 0),
+      position: new THREE.Vector3(100, 0, 0),
       curSpeed: 0
-    }
+    },
+    2: {
+      moveDir: new THREE.Vector3(0, 1, 0),
+      lookDir: new THREE.Vector3(0, 1, 0),
+      position: new THREE.Vector3(-100, 0, 0),
+      curSpeed: 0
+    },
   },
   keysPressed: {
     1: {
+      left: false,
+      right: false,
+      up: false,
+      down: false
+    },
+    2: {
       left: false,
       right: false,
       up: false,
@@ -88,6 +100,7 @@ function mainCycle(t2) {
   t1 = t2;
 
   movePlayer(1, tDiff)
+  movePlayer(2, tDiff)
 }
 
 function App() {
@@ -105,6 +118,18 @@ function App() {
       case 40:
         state.keysPressed[1].down = true;
         return;
+      case 68:
+        state.keysPressed[2].right = true
+        return
+      case 65:
+        state.keysPressed[2].left = true
+        return
+      case 87:
+        state.keysPressed[2].up = true
+        return
+      case 83:
+        state.keysPressed[2].down = true
+        return
       default:
         return;
     }
@@ -124,6 +149,18 @@ function App() {
       case 40:
         state.keysPressed[1].down = false;
         return;
+      case 68:
+        state.keysPressed[2].right = false
+        return
+      case 65:
+        state.keysPressed[2].left = false
+        return
+      case 87:
+        state.keysPressed[2].up = false
+        return
+      case 83:
+        state.keysPressed[2].down = false
+        return
       default:
         return;
     }
@@ -143,6 +180,7 @@ function App() {
       <ambientLight intensity={0.1} />
       <pointLight position={[100, 100, 100]} intensity={2.2} />
       <Ship pId={1}/>
+      <Ship pId={2}/>
     </Canvas>
   );
 }
