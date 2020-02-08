@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
 
-import { state } from '../state'
+import { state, preferences } from '../state'
 
 export function Bubble({ pId }) {
   const ref = useRef()
@@ -17,7 +17,7 @@ export function Bubble({ pId }) {
   return (
     <group ref={ref}>
       <mesh>
-        <sphereGeometry attach="geometry" args={[8, 32, 32]} />
+        <sphereGeometry attach="geometry" args={[preferences.bubbleRadius, 32, 32]} />
         <meshStandardMaterial attach="material" color="#f54242" />
       </mesh>
       <mesh position={[11, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]}>

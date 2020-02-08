@@ -4,17 +4,17 @@ import DatGui, { DatNumber } from 'react-dat-gui';
 import './index.css';
 
 import { mainCycle } from './cycle'
-import { prefereces } from './state'
+import { preferences } from './state'
 import { Bubble } from './components/Bubble'
 import { Surface } from './components/Surface'
 import { keyDown, keyUp } from './utils'
 
 function App() {
-  const [prefs, updatePrefs] = useState(prefereces);
+  const [prefs, updatePrefs] = useState(preferences);
   
   useEffect(() => {
     for (let prop in prefs)
-      prefereces[prop] = prefs[prop];
+      preferences[prop] = prefs[prop];
   }, [prefs]);
 
   useEffect(() => {

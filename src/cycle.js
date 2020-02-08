@@ -1,10 +1,10 @@
 import * as THREE from "three";
 
-import { state, prefereces } from './state'
+import { state, preferences } from './state'
 
 function movePlayer(pId, tDiff) {
   const { right, left, up, } = state.keysPressed[pId];
-  const { maxSpeed, accel, friction, rotateSpeed, skiddingC } = prefereces;
+  const { maxSpeed, accel, friction, rotateSpeed, skiddingC } = preferences;
 
   let curSpeed = state.players[pId].curSpeed;
   if (right) {
