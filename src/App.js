@@ -2,9 +2,12 @@ import React, { useCallback, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, addEffect, useFrame } from "react-three-fiber";
 
+const preferences = {
+
+}
 const maxSpeed = 70 // Meters per second.
 const accel = 10
-const friction = 0.7 // Decrease in 'friction' times curSpeed each second.
+const friction = 0.2 // Decrease in 'friction' times curSpeed each second.
 const rotateSpeed = THREE.Math.degToRad(70)
 const skiddingC = 0.8 // Should be dependent on player weight
 
@@ -63,8 +66,8 @@ function mainCycle(t2) {
     }
 
     const { lookDir, moveDir } = state.player
-    if (lookDir.angleTo(moveDir) < 0.05) {
-      state.player.moveDir = lookDir
+    if (lookDir.angleTo(moveDir) < 0.02) {
+      state.player.moveDir.copy(lookDir)
     } else {
       state.player.moveDir.lerp(lookDir, skiddingC * tDiff)
     }
