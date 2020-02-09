@@ -45,10 +45,16 @@ function movePlayer(pId, tDiff) {
   const newX = position.x + curSpeed * tDiff * moveDir.x
   if (newX + radius < rightBorder && newX - radius > leftBorder) {
     state.players[pId].position.setX(newX)
+  } else {
+    state.players[pId].moveDir.x *= -1
+    state.players[pId].curSpeed *= preferences.bounceK
   }
   const newY = position.y + curSpeed * tDiff * moveDir.y
   if (newY + radius < upBorder && newY - radius > bottBorder) {
     state.players[pId].position.setY(newY)
+  } else {
+    state.players[pId].moveDir.y = -state.players[pId].moveDir.y
+    state.players[pId].curSpeed *= preferences.bounceK
   }
 
 }
