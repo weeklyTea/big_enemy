@@ -39,7 +39,7 @@ function Point({ position }) {
   )
 }
 
-export function Field() {
+export const Field = React.memo(function() {
   const p1 = new THREE.Vector3(-preferences.fieldW / 2, preferences.fieldH / 2, 0)
   const p2 = new THREE.Vector3(preferences.fieldW / 2, preferences.fieldH / 2, 0)
   const p3 = new THREE.Vector3(preferences.fieldW / 2, -preferences.fieldH / 2, 0)
@@ -63,4 +63,4 @@ export function Field() {
       <Border start={gateBot} end={p4} gate negOffset/>
     </>
   );
-}
+})
