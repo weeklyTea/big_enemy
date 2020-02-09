@@ -16,9 +16,9 @@ const CrossHair = React.memo(function() {
   })
 
   return (
-    <mesh position={[len, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]} ref={ref}>
+    <mesh position={[len, 0, 1]} rotation={[0, 0, THREE.Math.degToRad(-90)]} ref={ref}>
       <octahedronBufferGeometry attach="geometry" args={[2, 0]} />
-      <meshBasicMaterial attach="material" color="#e6f508" transparent={true} opacity="0.8" />
+      <meshBasicMaterial attach="material" color="#e6f508" transparent={true} opacity="0.8" wireframe={true}/>
     </mesh>
   )
 
