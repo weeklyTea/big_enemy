@@ -47,7 +47,7 @@ export function Bubble({ pId }) {
         <sphereGeometry attach="geometry" args={[radius, 32, 32]} />
         <meshLambertMaterial attach="material" color={preferences.bubbleColors[pId - 1]} />
       </mesh>
-      <mesh position={[11, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]}>
+      <mesh position={[radius + 3, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]}>
         <coneBufferGeometry attach="geometry" args={[2, 4, 15]} />
         <meshBasicMaterial attach="material" color={preferences.bubbleColors[pId - 1]} transparent={true} opacity="0.5" />
       </mesh>
