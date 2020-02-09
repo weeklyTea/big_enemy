@@ -9,9 +9,9 @@ import { Bubble } from './components/Bubble'
 import { Surface } from './components/Surface'
 import { keyDown, keyUp } from './utils'
 import { Bullet } from "./components/Bullet";
-import { Hole } from './components/Hole'
 import { Wave } from './components/Wave'
 import { Field } from './components/Field';
+import { WaterCircles } from "./components/WaterCircles";
 
 import './style.css';
 
@@ -58,7 +58,8 @@ function App() {
         <Surface color={prefs.colorSurf} />
         <Bubble pId={1} color={prefs.color1} />
         <Bubble pId={2} color={prefs.color2} />
-        { state.bullets.map((bullet, idx) => <Bullet key={idx} id={idx} pId={bullet.playerId} />) }
+        { state.bullets.map((bullet, idx) => <Bullet key={bullet.id} id={idx} pId={bullet.playerId} />) }
+        { state.bullets.map((bullet, idx) => <WaterCircles key={bullet.id + 1} bullet={bullet} />) }
         { Array.from(Array(20)).map((x, i) => <Wave key={i} />) }
         <Field />
       </Canvas>

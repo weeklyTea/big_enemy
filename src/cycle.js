@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 import { state, preferences } from './state'
 import { getBubbleRadius } from "./utils";
+import uuid from 'uuid/v1';
 
 function movePlayer(pId, tDiff) {
   const { right, left, up, } = state.keysPressed[pId];
@@ -76,6 +77,7 @@ function tryShot(pId, forceUpdate) {
     return
 
   state.bullets.push({
+    id: uuid(),
     startPos: position.clone(),
     startTime: performance.now(),
     position: position.clone(),
@@ -160,7 +162,7 @@ export const mainCycle = (forceUpdate) => function (t2) {
 
   let updateIsNeeded = false
   state.bullets = state.bullets.filter(bullet => {
-    if (bullet.position.z + preferences.bulletRadius < 0) {
+    if (bullet.position.z + preferences.bulletRadius < -200) {
       updateIsNeeded = true
       return false
     }
