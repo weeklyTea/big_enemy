@@ -83,7 +83,7 @@ function tryShot(pId, forceUpdate) {
   forceUpdate()
 }
 
-function checkCollision(bullet, enemyId) {
+function bulletCollision(bullet, enemyId) {
   const bulletPos = bullet.position.clone()
   const bulletR = preferences.bulletRadius
 
@@ -98,6 +98,26 @@ function checkCollision(bullet, enemyId) {
     state.players[enemyId].shots += 1
     state.players[shooterId].balls -= 1
     state.players[shooterId].shots -= 1
+
+    // If new size of enemy doesn't fit to the fieldSize move enemy.
+    const enemy = state.players[enemyId]
+    const enemyR_ = getBubbleRadius(enemy.balls)
+
+    if (enemy.position.x + enemyR_ >= preferences.fieldW / 2) {
+      const diff = Math.abs(preferences.fieldW / 2 - (enemy.position.x + enemyR_))
+      state.players[enemyId].position.x -= diff + 0.1
+    } else if (enemy.position.x - enemyR_ <= -preferences.fieldW / 2) {
+      const diff = Math.abs(preferences.fieldW / 2 + (enemy.position.x - enemyR_))
+      state.players[enemyId].position.x += diff + 0.1
+    }
+
+    if (enemy.position.y + enemyR_ >= preferences.fieldH / 2) {
+      const diff = Math.abs(preferences.fieldH / 2 - (enemy.position.y + enemyR_))
+      state.players[enemyId].position.y -= diff + 0.1
+    } else if (enemy.position.y - enemyR_ <= -preferences.fieldH / 2) {
+      const diff = Math.abs(preferences.fieldH / 2 + (enemy.position.y - enemyR_))
+      state.players[enemyId].position.y += diff + 0.1
+    }
 
     bullet.stale = true
   }
@@ -143,7 +163,7 @@ export const mainCycle = (forceUpdate) => function (t2) {
 
   state.bullets.forEach((bullet, i) => {
     moveBullet(i, t2)
-    !bullet.stale && checkCollision(bullet, bullet.playerId === 1 ? 2 : 1)
+    !bullet.stale && bulletCollision(bullet, bullet.playerId === 1 ? 2 : 1)
   })
 
   if (updateIsNeeded) {
