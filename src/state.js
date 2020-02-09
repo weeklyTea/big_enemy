@@ -9,7 +9,9 @@ export const preferences = {
   skiddingC: 0.8, // Should be dependent on player weight
   radiusPerBall: 1.5,
   minBubbleRadius: 2,
+  maxBallsCount: 7,
   bulletRadius: 2,
+  bRadiusCoef: 2,
   fieldW: 350, // Meters
   fieldH: 250, // Meters
   radIncrease: 4,
@@ -41,8 +43,8 @@ const initPStates = {
     moveDir: new THREE.Vector3(0, 1, 0),
     lookDir: new THREE.Vector3(-1, 0, 0),
     position: new THREE.Vector3(100, 0, 0),
-    balls: 7,
-    shots: 7,
+    balls: preferences.maxBallsCount,
+    shots: preferences.maxBallsCount,
     shotsReloading: [], // Array with times when shot should be reloaded.
     curSpeed: 0,
   },
@@ -50,8 +52,8 @@ const initPStates = {
     moveDir: new THREE.Vector3(0, 1, 0),
     lookDir: new THREE.Vector3(1, 0, 0),
     position: new THREE.Vector3(-100, 0, 0),
-    balls: 7,
-    shots: 7,
+    balls: preferences.maxBallsCount,
+    shots: preferences.maxBallsCount,
     shotsReloading: [], // Array with times when shot should be reloaded.
     curSpeed: 0,
   }

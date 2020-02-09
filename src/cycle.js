@@ -92,10 +92,12 @@ function moveBullet(id, curTime) {
 
 function tryShot(pId, forceUpdate) {
   state.keysPressed[pId].shot = false
-  const { position, lookDir, shots } = state.players[pId]
+  const { position, lookDir, shots, balls } = state.players[pId]
   if (shots <= 0)
     return
 
+  const extraBalls = balls - preferences.maxBallsCount
+  const extraSize = extraBalls < 0 ? 0 : extraBalls * preferences.bRadiusCoef
   state.bullets.push({
     id: uuid(),
     startPos: position.clone(),
@@ -104,6 +106,7 @@ function tryShot(pId, forceUpdate) {
     dir: lookDir.clone(),
     playerId: pId,
     stale: false, // If true ignore this bullet
+    radius: preferences.bulletRadius + extraSize
   })
   state.players[pId].shots -= 1
   state.players[pId].shotsReloading.push(preferences.shot.reloadingTime)
@@ -113,7 +116,7 @@ function tryShot(pId, forceUpdate) {
 
 function bulletCollision(bullet, enemyId) {
   const bulletPos = bullet.position.clone()
-  const bulletR = preferences.bulletRadius
+  const bulletR = bullet.radius
 
   const enemyPos = state.players[enemyId].position.clone()
   const balls = state.players[enemyId].balls
