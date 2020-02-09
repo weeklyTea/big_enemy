@@ -7,13 +7,13 @@ export const preferences = {
   bounceK: 0.5, // Decrease curSpeed after hiting the border
   rotateSpeed: THREE.Math.degToRad(90),
   skiddingC: 0.8, // Should be dependent on player weight
-  radiusPerBall: 1,
+  radiusPerBall: 1.5,
   minBubbleRadius: 2,
   bulletRadius: 2,
   fieldW: 350, // Meters
   fieldH: 250, // Meters
   radIncrease: 4,
-  gateWidth: 10,
+  gateWidth: 14,
   shot: {
     reloadingTime: 2, // sec.
     //// Look from up case:
