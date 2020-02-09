@@ -5,7 +5,7 @@ import { getBubbleRadius } from "./utils";
 import uuid from 'uuid/v1';
 
 function movePlayer(pId, tDiff, setScore) {
-  const { right, left, up, } = state.keysPressed[pId];
+  const { right, left, up, down } = state.keysPressed[pId];
   const { maxSpeed, accel, friction, rotateSpeed, skiddingC } = preferences;
 
   let curSpeed = state.players[pId].curSpeed;
@@ -28,7 +28,11 @@ function movePlayer(pId, tDiff, setScore) {
       let alfa = curSpeed < 10 ? 1 : skiddingC * tDiff
       state.players[pId].moveDir.lerp(lookDir, alfa)
     }
-  } else if (!up) {
+  } else if (down) {
+    const d = state.players[pId].curSpeed * preferences.brakeCoef * tDiff
+    if (state.players[pId].curSpeed - d < 0 || d < 0.01) state.players[pId].curSpeed = 0
+    else state.players[pId].curSpeed -= d
+  } else if (!up && !down) {
     const d = state.players[pId].curSpeed * friction * tDiff
     if (state.players[pId].curSpeed - d < 0 || d < 0.01) state.players[pId].curSpeed = 0
     else state.players[pId].curSpeed -= d
@@ -47,11 +51,11 @@ function movePlayer(pId, tDiff, setScore) {
   if (newX + radius < rightBorder && newX - radius > leftBorder) {
     state.players[pId].position.setX(newX)
   } else if (
-    radius <= preferences.minBubbleRadius + preferences.radiusPerBall * 4 && 
+    radius <= preferences.minBubbleRadius + preferences.radiusPerBall * 4 &&
     state.players[pId].position.y + radius < preferences.gateWidth / 2 &&
-    state.players[pId].position.y - radius > -preferences.gateWidth / 2 ) {
-      // If radius is small enough allow to move through the gate
-      state.players[pId].position.setX(newX)
+    state.players[pId].position.y - radius > -preferences.gateWidth / 2) {
+    // If radius is small enough allow to move through the gate
+    state.players[pId].position.setX(newX)
   } else {
     state.players[pId].moveDir.x *= -1
     state.players[pId].curSpeed *= preferences.bounceK
@@ -71,7 +75,7 @@ function movePlayer(pId, tDiff, setScore) {
   const winZone = new THREE.Box2(
     new THREE.Vector2(-preferences.fieldW / 2 - winMaxDepth, -30),
     new THREE.Vector2(-preferences.fieldW / 2 - winMinDepth, 30),
-    )
+  )
   const newPos3 = state.players[pId].position
   const pos2 = new THREE.Vector2(newPos3.x, newPos3.y)
   if (winZone.containsPoint(pos2)) {

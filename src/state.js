@@ -4,6 +4,7 @@ export const preferences = {
   maxSpeed: 70, // Meters per second.
   accel: 10,
   friction: 0.2, // Decrease curSpeed in 'friction' times each second.
+  brakeCoef: 1,
   bounceK: 0.5, // Decrease curSpeed after hiting the border
   rotateSpeed: THREE.Math.degToRad(90),
   skiddingC: 0.8, // Should be dependent on player weight
