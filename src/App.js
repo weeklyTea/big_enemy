@@ -41,13 +41,13 @@ function App() {
   const groundColor = "#888888";
   return (
     <div>
-      <DatGui data={prefs} onUpdate={updatePrefs}>
+      {/* <DatGui data={prefs} onUpdate={updatePrefs}>
         <DatNumber path="maxSpeed" label="maxSpeed" min={0} max={400} step={1} />
         <DatNumber path="accel" label="accel" min={0} max={400} step={1} />
         <DatNumber path="friction" label="friction" min={0} max={400} step={0.1} />
         <DatNumber path="rotateSpeed" label="rotateSpeed" min={0} max={360} step={1} />
         <DatNumber path="skiddingC" label="skiddingC" min={0} max={400} step={0.1} />
-      </DatGui>
+      </DatGui> */}
       <Canvas
         style={{ height: window.innerHeight }}
         camera={{ fov: 30, position: [0, -400, 340] }}

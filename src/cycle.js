@@ -89,7 +89,7 @@ function moveBullet(id, curTime) {
   const shotTDiff = (curTime - startTime) / 1000 // Time diff between shot moment and current moment
   const moveVector = dir.clone().multiplyScalar(speed * Math.cos(angle) * shotTDiff)
   state.bullets[id].position = startPos.clone().add(moveVector)
-  state.bullets[id].position.z = speed * Math.sin(angle) * shotTDiff * (2 - shotTDiff) - (gravity * shotTDiff * shotTDiff) / 2
+  state.bullets[id].position.z = speed * Math.sin(angle) * shotTDiff /* * (2 - shotTDiff) */ - (gravity * shotTDiff * shotTDiff) / 2
 }
 
 function tryShot(pId, forceUpdate) {

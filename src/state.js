@@ -17,7 +17,7 @@ export const preferences = {
   radIncrease: 4,
   gateWidth: 14,
   shot: {
-    reloadingTime: 2, // sec.
+    reloadingTime: 8, // sec.
     //// Look from up case:
     // gravity: 850,
     // speed: 550, // m/s
@@ -30,7 +30,7 @@ export const preferences = {
 
     //// Testing:
     // gravity: 250,
-    // speed: 220, // m/s
+    // speed: 230, // m/s
     // angle: THREE.Math.degToRad(45),
   },
   bubbleColors: ['#DB4A4A', '#54915F'],
