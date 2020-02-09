@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import * as THREE from "three";
 import { useFrame } from "react-three-fiber";
 
 import { state, preferences } from '../state'
+import { getBubbleRadius } from "../utils";
 
 
 const CrossHair = React.memo(function() {
@@ -25,24 +26,25 @@ const CrossHair = React.memo(function() {
 
 export function Bubble({ pId }) {
   const ref = useRef()
+  const curBalls = useRef(state.players[pId].balls)
+  const [radius, setRadius] = useState(getBubbleRadius(curBalls.current))
 
   useFrame(() => {
     const mesh = ref.current
-    const { lookDir, position, scale } = state.players[pId]
+    const { lookDir, position } = state.players[pId]
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), lookDir.clone().normalize())
     mesh.position.copy(position)
-    if (scale !== 1) {
-      mesh.scale.multiplyScalar(scale)
-      state.players[pId].scale = 1
+    if (state.players[pId].balls !== curBalls.current) {
+      curBalls.current = state.players[pId].balls
+      const newR = getBubbleRadius(curBalls.current)
+      setRadius(newR)
     }
   })
-
-
 
   return (
     <group ref={ref}>
       <mesh >
-        <sphereGeometry attach="geometry" args={[preferences.bubbleRadius, 32, 32]} />
+        <sphereGeometry attach="geometry" args={[radius, 32, 32]} />
         <meshLambertMaterial attach="material" color={preferences.bubbleColors[pId - 1]} />
       </mesh>
       <mesh position={[11, 0, 0]} rotation={[0, 0, THREE.Math.degToRad(-90)]}>

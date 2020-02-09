@@ -6,17 +6,27 @@ export const preferences = {
   friction: 0.2, // Decrease curSpeed in 'friction' times each second.
   rotateSpeed: THREE.Math.degToRad(90),
   skiddingC: 0.8, // Should be dependent on player weight
-  bubbleRadius: 8, // Meters
+  radiusPerBall: 1,
+  minBubbleRadius: 2,
   bulletRadius: 2,
   fieldW: 250, // Meters
   fieldH: 150, // Meters
   radIncrease: 4,
   shot: {
+    // Look from up case:
     // gravity: 850,
     // speed: 550, // m/s
+    // angle: THREE.Math.degToRad(80),
+
+    // Angle look:
     gravity: 250,
     speed: 170, // m/s
     angle: THREE.Math.degToRad(60),
+
+    // Shot test case:
+    // gravity: 250,
+    // speed: 220, // m/s
+    // angle: THREE.Math.degToRad(45),
   },
   bubbleColors: ['#DB4A4A', '#54915F'],
   bulletColors: ['#DB4A4A', '#54915F']
@@ -28,17 +38,15 @@ export const state = {
       moveDir: new THREE.Vector3(0, 1, 0),
       lookDir: new THREE.Vector3(-1, 0, 0),
       position: new THREE.Vector3(100, 0, 0),
-      radius: preferences.bubbleRadius,
+      balls: 7,
       curSpeed: 0,
-      scale: 1,
     },
     2: {
       moveDir: new THREE.Vector3(0, 1, 0),
-      lookDir: new THREE.Vector3(0, 1, 0),
+      lookDir: new THREE.Vector3(1, 0, 0),
       position: new THREE.Vector3(-100, 0, 0),
-      radius: preferences.bubbleRadius,
+      balls: 7,
       curSpeed: 0,
-      scale: 1,
     },
   },
   bullets: [],

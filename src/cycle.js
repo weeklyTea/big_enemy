@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 import { state, preferences } from './state'
+import { getBubbleRadius } from "./utils";
 
 function movePlayer(pId, tDiff) {
   const { right, left, up, } = state.keysPressed[pId];
@@ -32,7 +33,8 @@ function movePlayer(pId, tDiff) {
     else state.players[pId].curSpeed -= d
   }
 
-  const { position, moveDir, radius } = state.players[pId]
+  const { position, moveDir, balls } = state.players[pId]
+  const radius = getBubbleRadius(balls)
   curSpeed = state.players[pId].curSpeed
 
   const rightBorder = preferences.fieldW / 2
@@ -75,17 +77,19 @@ function createBullet(pId, forceUpdate) {
     forceUpdate()
 }
 
-function checkCollision(bullet, pId) {
-  const bPos = bullet.position.clone()
-  const bRadius = preferences.bulletRadius
+function checkCollision(bullet, enemyId) {
+  const bulletPos = bullet.position.clone()
+  const bulletR = preferences.bulletRadius
 
-  const pPos = state.players[pId].position.clone()
-  const pRadius = state.players[pId].radius
+  const enemyPos = state.players[enemyId].position.clone()
+  const balls = state.players[enemyId].balls
+  const enemyR = getBubbleRadius(balls)
 
-  if (pPos.distanceTo(bPos) < pRadius + bRadius) {
-    state.players[pId].scale += 0.3
+  if (enemyPos.distanceTo(bulletPos) < enemyR + bulletR) {
+    state.players[enemyId].balls += 1
+    const shooterId = bullet.playerId
+    state.players[shooterId].balls -= 1
     bullet.stale = true
-    console.log('HIT!')
   }
 }
 
@@ -118,11 +122,6 @@ export const mainCycle = (forceUpdate) => function (t2) {
     moveBullet(i, t2)
     !bullet.stale && checkCollision(bullet, bullet.playerId === 1 ? 2 : 1)
   })
-
-  // Collisions:
-  state.bullets.forEach((bullet) => {
-  })
-
 
   if(updateIsNeeded) {
     forceUpdate()

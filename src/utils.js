@@ -1,4 +1,8 @@
-import { state } from './state'
+import { state, preferences } from './state'
+
+export function getBubbleRadius(ballsCount) {
+  return preferences.minBubbleRadius + ballsCount * preferences.radiusPerBall
+}
 
 export const keyDown = e => {
   console.log(e.keyCode)
