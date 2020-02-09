@@ -32,7 +32,8 @@ export const preferences = {
     // angle: THREE.Math.degToRad(45),
   },
   bubbleColors: ['#DB4A4A', '#54915F'],
-  bulletColors: ['#DB4A4A', '#54915F']
+  bulletColors: ['#DB4A4A', '#54915F'],
+  crossHairColors: ['#ff0088', '#00ff2e']
 }
 
 export const state = {
