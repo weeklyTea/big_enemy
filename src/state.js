@@ -36,26 +36,31 @@ export const preferences = {
   crossHairColors: ['#ff0088', '#00ff2e']
 }
 
+const initPStates = {
+  1: {
+    moveDir: new THREE.Vector3(0, 1, 0),
+    lookDir: new THREE.Vector3(-1, 0, 0),
+    position: new THREE.Vector3(100, 0, 0),
+    balls: 7,
+    shots: 7,
+    shotsReloading: [], // Array with times when shot should be reloaded.
+    curSpeed: 0,
+  },
+  2: {
+    moveDir: new THREE.Vector3(0, 1, 0),
+    lookDir: new THREE.Vector3(1, 0, 0),
+    position: new THREE.Vector3(-100, 0, 0),
+    balls: 7,
+    shots: 7,
+    shotsReloading: [], // Array with times when shot should be reloaded.
+    curSpeed: 0,
+  }
+}
+
 export const state = {
   players: {
-    1: {
-      moveDir: new THREE.Vector3(0, 1, 0),
-      lookDir: new THREE.Vector3(-1, 0, 0),
-      position: new THREE.Vector3(100, 0, 0),
-      balls: 7,
-      shots: 7,
-      shotsReloading: [], // Array with times when shot should be reloaded.
-      curSpeed: 0,
-    },
-    2: {
-      moveDir: new THREE.Vector3(0, 1, 0),
-      lookDir: new THREE.Vector3(1, 0, 0),
-      position: new THREE.Vector3(-100, 0, 0),
-      balls: 7,
-      shots: 7,
-      shotsReloading: [],
-      curSpeed: 0,
-    },
+    1: {},
+    2: {},
   },
   bullets: [],
   keysPressed: {
@@ -74,4 +79,21 @@ export const state = {
       shot: false,
     },
   }
+}
+
+function resetPlayerState(pId) {
+  const initState = initPStates[pId]
+  Object.keys(initState).forEach(key => {
+    const val = initState[key]
+    const newVal = val.constructor === THREE.Vector3 ? val.clone() : val
+    state.players[pId][key] = newVal
+  })
+}
+
+resetPlayerState(1)
+resetPlayerState(2)
+
+export function resetState() {
+  resetPlayerState(1)
+  resetPlayerState(2)
 }

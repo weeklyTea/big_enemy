@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-import { state, preferences } from './state'
+import { state, preferences, resetState as resetPlayers } from './state'
 import { getBubbleRadius } from "./utils";
 import uuid from 'uuid/v1';
 
@@ -48,8 +48,9 @@ function movePlayer(pId, tDiff) {
     state.players[pId].position.setX(newX)
   } else if (
     radius === preferences.minBubbleRadius && 
-    state.players[pId].position.y < preferences.minBubbleRadius &&
-    state.players[pId].position.y > -preferences.minBubbleRadius ) {
+    state.players[pId].position.y + radius < preferences.gateWidth / 2 &&
+    state.players[pId].position.y + radius > -preferences.gateWidth / 2 ) {
+      // If radius is small enough allow to move through the gate
       state.players[pId].position.setX(newX)
   } else {
     state.players[pId].moveDir.x *= -1
@@ -64,6 +65,19 @@ function movePlayer(pId, tDiff) {
     state.players[pId].curSpeed *= preferences.bounceK
   }
 
+  // Check if player win.
+  const winMaxDepth = 40
+  const winMinDepth = 3
+  const winZone = new THREE.Box2(
+    new THREE.Vector2(-preferences.fieldW / 2 - winMaxDepth, -30),
+    new THREE.Vector2(-preferences.fieldW / 2 - winMinDepth, 30),
+    )
+  const newPos3 = state.players[pId].position
+  const pos2 = new THREE.Vector2(newPos3.x, newPos3.y)
+  if (winZone.containsPoint(pos2)) {
+    console.log(`Player ${pId} win!`)
+    resetPlayers()
+  }
 }
 
 function moveBullet(id, curTime) {

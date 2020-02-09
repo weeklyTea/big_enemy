@@ -9,9 +9,6 @@ function Border({ start, end, negOffset = false, gate = false }) {
   const ref = useRef()
 
   useEffect(() => {
-  }, [negOffset])
-
-  useEffect(() => {
     const mesh = ref.current
 
     const dir = end.clone().sub(start).normalize()
@@ -19,7 +16,8 @@ function Border({ start, end, negOffset = false, gate = false }) {
     mesh.quaternion.setFromUnitVectors(xDir, dir)
 
     const wOffset = width / 2
-    mesh.geometry.translate(gate ? lenOffset : 0, negOffset ? -wOffset : wOffset, 0)
+    const gateOffset = preferences.gateWidth / 2
+    mesh.geometry.translate(gate ? gateOffset : 0, negOffset ? -wOffset : wOffset, 0)
   }, [end, start, negOffset, gate])
 
   const len = end.distanceTo(start) + lenOffset * (gate ? 1 : 2)
