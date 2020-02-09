@@ -48,7 +48,7 @@ function App() {
       </DatGui>
       <Canvas
         style={{ height: window.innerHeight }}
-        camera={{ fov: 30, position: [0, -200, 170] }}
+        camera={{ fov: 30, position: [0, -400, 340] }}
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
       >
         <ambientLight intensity={0.6} />
