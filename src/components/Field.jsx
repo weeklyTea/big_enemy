@@ -50,13 +50,13 @@ export const Field = React.memo(function() {
 
   return (
     <>
-      <Point position={p1} />
+      {/* <Point position={p1} />
       <Point position={p2} />
       <Point position={p3} />
       <Point position={p4} />
 
       <Point position={gateBot} />
-      <Point position={gateUp} />
+      <Point position={gateUp} /> */}
 
       <Border start={p1} end={p2} />
       <Border start={p2} end={p3} />
