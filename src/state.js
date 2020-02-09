@@ -80,7 +80,8 @@ export const state = {
       down: false,
       shot: false,
     },
-  }
+  },
+  score: [0, 0]
 }
 
 function resetPlayerState(pId) {

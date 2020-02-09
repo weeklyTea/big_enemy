@@ -4,7 +4,7 @@ import { state, preferences, resetState as resetPlayers } from './state'
 import { getBubbleRadius } from "./utils";
 import uuid from 'uuid/v1';
 
-function movePlayer(pId, tDiff) {
+function movePlayer(pId, tDiff, setScore) {
   const { right, left, up, } = state.keysPressed[pId];
   const { maxSpeed, accel, friction, rotateSpeed, skiddingC } = preferences;
 
@@ -75,6 +75,8 @@ function movePlayer(pId, tDiff) {
   const newPos3 = state.players[pId].position
   const pos2 = new THREE.Vector2(newPos3.x, newPos3.y)
   if (winZone.containsPoint(pos2)) {
+    state.score[pId - 1]++;
+    setScore([...state.score]);
     console.log(`Player ${pId} win!`)
     resetPlayers()
   }
@@ -87,7 +89,7 @@ function moveBullet(id, curTime) {
   const shotTDiff = (curTime - startTime) / 1000 // Time diff between shot moment and current moment
   const moveVector = dir.clone().multiplyScalar(speed * Math.cos(angle) * shotTDiff)
   state.bullets[id].position = startPos.clone().add(moveVector)
-  state.bullets[id].position.z = speed * Math.sin(angle) * shotTDiff - (gravity * shotTDiff * shotTDiff) / 2
+  state.bullets[id].position.z = speed * Math.sin(angle) * shotTDiff * (2 - shotTDiff) - (gravity * shotTDiff * shotTDiff) / 2
 }
 
 function tryShot(pId, forceUpdate) {
@@ -166,12 +168,12 @@ function updateReloadings(pId, tDiff) {
 }
 
 let t1 = performance.now();
-export const mainCycle = (forceUpdate) => function (t2) {
+export const mainCycle = (forceUpdate, setScore) => function (t2) {
   const tDiff = (t2 - t1) / 1000; // Time diff between current and last frames in seconds
   t1 = t2;
 
-  movePlayer(1, tDiff)
-  movePlayer(2, tDiff)
+  movePlayer(1, tDiff, setScore)
+  movePlayer(2, tDiff, setScore)
 
   updateReloadings(1, tDiff)
   updateReloadings(2, tDiff)

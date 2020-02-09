@@ -12,6 +12,7 @@ import { Bullet } from "./components/Bullet";
 import { Wave } from './components/Wave'
 import { Field } from './components/Field';
 import { WaterCircles } from "./components/WaterCircles";
+import { Score } from './components/Score';
 
 import './style.css';
 
@@ -23,7 +24,7 @@ function useForceUpdate() {
 
 function App() {
   const [prefs, updatePrefs] = useState(preferences);
-
+  const [score, setScore] = useState([0, 0]);
   const forceUpdate = useForceUpdate()
   
   useEffect(() => {
@@ -32,7 +33,7 @@ function App() {
   }, [prefs]);
 
   useEffect(() => {
-    addEffect(mainCycle(forceUpdate));
+    addEffect(mainCycle(forceUpdate, setScore));
     window.addEventListener("keyup", keyUp);
     window.addEventListener("keydown", keyDown);
   }, []);
@@ -65,6 +66,7 @@ function App() {
         { Array.from(Array(20)).map((x, i) => <Wave key={i} />) }
         <Field />
       </Canvas>
+      <Score score={score}/>
     </div>
   );
 }
