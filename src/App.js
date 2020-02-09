@@ -59,7 +59,7 @@ function App() {
         <Bubble pId={2} color={prefs.color2} />
         { state.bullets.map((bullet, idx) => <Bullet key={idx} id={idx} pId={bullet.playerId} />) }
         <Hole />
-        { Array.from(Array(15)).map(() => <Wave />) }
+        { Array.from(Array(15)).map((x, i) => <Wave key={i} />) }
       </Canvas>
     </div>
   );
