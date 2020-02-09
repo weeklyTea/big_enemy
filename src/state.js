@@ -14,17 +14,18 @@ export const preferences = {
   radIncrease: 4,
   gateW: 10,
   shot: {
-    // Look from up case:
+    reloadingTime: 2, // sec.
+    //// Look from up case:
     // gravity: 850,
     // speed: 550, // m/s
     // angle: THREE.Math.degToRad(80),
 
-    // Angle look:
+    //// Angle look:
     gravity: 250,
     speed: 170, // m/s
     angle: THREE.Math.degToRad(60),
 
-    // Shot test case:
+    //// Testing:
     // gravity: 250,
     // speed: 220, // m/s
     // angle: THREE.Math.degToRad(45),
@@ -40,6 +41,8 @@ export const state = {
       lookDir: new THREE.Vector3(-1, 0, 0),
       position: new THREE.Vector3(100, 0, 0),
       balls: 7,
+      shots: 7,
+      shotsReloading: [], // Array with times when shot should be reloaded.
       curSpeed: 0,
     },
     2: {
@@ -47,6 +50,8 @@ export const state = {
       lookDir: new THREE.Vector3(1, 0, 0),
       position: new THREE.Vector3(-100, 0, 0),
       balls: 7,
+      shots: 7,
+      shotsReloading: [],
       curSpeed: 0,
     },
   },

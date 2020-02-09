@@ -63,18 +63,24 @@ function moveBullet(id, curTime) {
   state.bullets[id].position.z = speed * Math.sin(angle) * shotTDiff - (gravity * shotTDiff * shotTDiff) / 2
 }
 
-function createBullet(pId, forceUpdate) {
-  const { position, lookDir } = state.players[pId]
-    state.keysPressed[pId].shot = false
-    state.bullets.push({
-      startPos: position.clone(),
-      startTime: performance.now(),
-      position: position.clone(),
-      dir: lookDir.clone(),
-      playerId: pId,
-      stale: false, // If true ignore this bullet
-    })
-    forceUpdate()
+function tryShot(pId, forceUpdate) {
+  state.keysPressed[pId].shot = false
+  const { position, lookDir, shots } = state.players[pId]
+  if (shots <= 0)
+    return
+
+  state.bullets.push({
+    startPos: position.clone(),
+    startTime: performance.now(),
+    position: position.clone(),
+    dir: lookDir.clone(),
+    playerId: pId,
+    stale: false, // If true ignore this bullet
+  })
+  state.players[pId].shots -= 1
+  state.players[pId].shotsReloading.push(preferences.shot.reloadingTime)
+
+  forceUpdate()
 }
 
 function checkCollision(bullet, enemyId) {
@@ -86,11 +92,26 @@ function checkCollision(bullet, enemyId) {
   const enemyR = getBubbleRadius(balls)
 
   if (enemyPos.distanceTo(bulletPos) < enemyR + bulletR) {
-    state.players[enemyId].balls += 1
     const shooterId = bullet.playerId
+
+    state.players[enemyId].balls += 1
+    state.players[enemyId].shots += 1
     state.players[shooterId].balls -= 1
+    state.players[shooterId].shots -= 1
+
     bullet.stale = true
   }
+}
+
+function updateReloadings(pId, tDiff) {
+  const reloadings = state.players[pId].shotsReloading
+  state.players[pId].shotsReloading = reloadings.map(time => {
+    const newT = time - tDiff
+    if (newT <= 0) {
+      state.players[pId].shots += 1
+    }
+    return newT
+  }).filter(time => time >= 0)
 }
 
 let t1 = performance.now();
@@ -101,13 +122,15 @@ export const mainCycle = (forceUpdate) => function (t2) {
   movePlayer(1, tDiff)
   movePlayer(2, tDiff)
 
+  updateReloadings(1, tDiff)
+  updateReloadings(2, tDiff)
+
   if (state.keysPressed[1].shot) {
-    createBullet(1, forceUpdate)
+    tryShot(1, forceUpdate)
   }
   if (state.keysPressed[2].shot) {
-    createBullet(2, forceUpdate)
+    tryShot(2, forceUpdate)
   }
-
 
   let updateIsNeeded = false
   state.bullets = state.bullets.filter(bullet => {
@@ -123,7 +146,7 @@ export const mainCycle = (forceUpdate) => function (t2) {
     !bullet.stale && checkCollision(bullet, bullet.playerId === 1 ? 2 : 1)
   })
 
-  if(updateIsNeeded) {
+  if (updateIsNeeded) {
     forceUpdate()
   }
 }

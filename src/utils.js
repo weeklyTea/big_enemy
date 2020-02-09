@@ -5,7 +5,7 @@ export function getBubbleRadius(ballsCount) {
 }
 
 export const keyDown = e => {
-  console.log(e.keyCode)
+  // console.log('keyCode: ', e.keyCode)
   switch (e.keyCode) {
     case 13: // enter
       state.keysPressed[1].shot = true;
