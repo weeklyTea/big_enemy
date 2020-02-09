@@ -8,11 +8,12 @@ const getRandomFloat = function (min, max) {
   return Math.random() * (max - min) + min;
 }
 
+const { fieldW, fieldH } = preferences;
 const randSize = () => Math.floor(Math.random() * 3) + 1;
 const randOpacity = () => Math.abs(Math.random() - 0.2);
 const randPosition = () => [
-  getRandomFloat(-100, 100),
-  getRandomFloat(-100, 100),
+  getRandomFloat(-fieldW / 1.5, fieldW / 1.5),
+  getRandomFloat(-fieldH / 1.5, fieldH / 1.5),
   0.1
 ];
 
@@ -24,7 +25,7 @@ export function Wave() {
   const [toZero, switchOpacityDir] = useState(true);
 
   useFrame((state, delta) => {
-    let step = 1 / (5 / delta);
+    let step = 1 / ((initOpacity < 0.4 ? 8 : 3) / delta);
 
     if (toZero && nextOpacity < 0) {
       setOpacity(0);

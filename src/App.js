@@ -11,6 +11,7 @@ import { keyDown, keyUp } from './utils'
 import { Bullet } from "./components/Bullet";
 import { Hole } from './components/Hole'
 import { Wave } from './components/Wave'
+import { Field } from './components/Field';
 
 import './style.css';
 
@@ -58,8 +59,8 @@ function App() {
         <Bubble pId={1} color={prefs.color1} />
         <Bubble pId={2} color={prefs.color2} />
         { state.bullets.map((bullet, idx) => <Bullet key={idx} id={idx} pId={bullet.playerId} />) }
-        <Hole />
         { Array.from(Array(15)).map((x, i) => <Wave key={i} />) }
+        <Field />
       </Canvas>
     </div>
   );

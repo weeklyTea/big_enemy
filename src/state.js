@@ -9,9 +9,10 @@ export const preferences = {
   radiusPerBall: 1,
   minBubbleRadius: 2,
   bulletRadius: 2,
-  fieldW: 250, // Meters
-  fieldH: 150, // Meters
+  fieldW: 350, // Meters
+  fieldH: 250, // Meters
   radIncrease: 4,
+  gateW: 10,
   shot: {
     // Look from up case:
     // gravity: 850,
