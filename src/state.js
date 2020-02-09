@@ -13,7 +13,7 @@ export const preferences = {
   fieldW: 350, // Meters
   fieldH: 250, // Meters
   radIncrease: 4,
-  gateW: 10,
+  gateWidth: 10,
   shot: {
     reloadingTime: 2, // sec.
     //// Look from up case:
