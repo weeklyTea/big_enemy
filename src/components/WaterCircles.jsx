@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import { state } from "../state";
 import { useFrame } from "react-three-fiber";
 
-const initState = {
-  opacity: 0.6,
-  r1: 3,
-  r2: 3.8
-};
-
 export function WaterCircles({ bullet }) {
-  const [ c1NextState, setC1NextState ] = useState(initState);
-  const [ c2NextState, setC2NextState ] = useState(initState);
+  const [ c1NextState, setC1NextState ] = useState({ opacity: 0.6, r1: bullet.radius, r2: bullet.radius + 0.8 });
+  const [ c2NextState, setC2NextState ] = useState({ opacity: 0.6, r1: bullet.radius, r2: bullet.radius + 0.8 });
   const [ visible, setVisibility ] = useState(false);
   const [ position, setPosition ] = useState(null);
 
