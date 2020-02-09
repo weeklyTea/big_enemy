@@ -51,9 +51,10 @@ function App() {
         style={{ height: window.innerHeight }}
         camera={{ fov: 30, position: [0, -400, 340] }}
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
+        shadowMap={true}
       >
         <ambientLight intensity={0.6} />
-        <spotLight position={[0, 0, 160]} intensity={0.6} />
+        <spotLight position={[0, 0, 160]} intensity={0.6} castShadow={true} />
         <hemisphereLight skyColor={skyColor} groundColor={groundColor} intensity={0.2} />
         <Surface color={prefs.colorSurf} />
         <Bubble pId={1} color={prefs.color1} />

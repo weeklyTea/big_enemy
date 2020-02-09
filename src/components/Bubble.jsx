@@ -43,7 +43,7 @@ export function Bubble({ pId }) {
 
   return (
     <group ref={ref}>
-      <mesh >
+      <mesh receiveShadow={true}>
         <sphereGeometry attach="geometry" args={[radius, 32, 32]} />
         <meshLambertMaterial attach="material" color={preferences.bubbleColors[pId - 1]} />
       </mesh>

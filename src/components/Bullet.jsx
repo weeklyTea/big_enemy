@@ -13,7 +13,7 @@ export function Bullet({ pId, id }) {
   })
 
   return (
-    <mesh ref={ref} position={position}>
+    <mesh ref={ref} position={position} castShadow={true} receiveShadow={false}>
       <sphereGeometry attach="geometry" args={[preferences.bulletRadius, 32, 32]} />
       <meshLambertMaterial attach="material" color={preferences.bulletColors[pId - 1]} />
     </mesh>
