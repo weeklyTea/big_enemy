@@ -58,22 +58,8 @@ function App() {
         <Bubble pId={1} color={prefs.color1} />
         <Bubble pId={2} color={prefs.color2} />
         { state.bullets.map((bullet, idx) => <Bullet key={idx} id={idx} pId={bullet.playerId} />) }
-        <Hole size={prefs.holeSize} />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
-        <Wave />
+        <Hole />
+        { Array.from(Array(15)).map(() => <Wave />) }
       </Canvas>
     </div>
   );

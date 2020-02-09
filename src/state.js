@@ -7,7 +7,7 @@ export const preferences = {
   rotateSpeed: THREE.Math.degToRad(90),
   skiddingC: 0.8, // Should be dependent on player weight
   bubbleRadius: 8, // Meters
-  bulletRadius: 3,
+  bulletRadius: 2,
   fieldW: 250, // Meters
   fieldH: 150, // Meters
   radIncrease: 4,
@@ -17,7 +17,9 @@ export const preferences = {
     gravity: 250,
     speed: 170, // m/s
     angle: THREE.Math.degToRad(60),
-  }
+  },
+  bubbleColors: ['#DB4A4A', '#54915F'],
+  bulletColors: ['#DB4A4A', '#54915F']
 }
 
 export const state = {
