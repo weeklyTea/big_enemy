@@ -37,7 +37,7 @@ function App() {
     window.addEventListener("keydown", keyDown);
   }, []);
   const skyColor = "0xffffff";
-  const groundColor = "#1781a4";
+  const groundColor = "#888888";
   return (
     <div>
       <DatGui data={prefs} onUpdate={updatePrefs}>
@@ -53,9 +53,10 @@ function App() {
         onCreated={({ camera }) => camera.lookAt(0, 0, 0)}
         shadowMap={true}
       >
-        <ambientLight intensity={0.6} />
-        <spotLight position={[0, 0, 160]} intensity={0.6} castShadow={true} />
-        <hemisphereLight skyColor={skyColor} groundColor={groundColor} intensity={0.2} />
+        <ambientLight intensity={0.1} />
+        <pointLight position={[0, 0, 160]} intensity={0.4} castShadow={true} distance={360}/>
+        <hemisphereLight skyColor={skyColor} groundColor={groundColor} intensity={0.7} />
+        <directionalLight position={[0, 0, 200]} intensity={0.5} />
         <Surface color={prefs.colorSurf} />
         <Bubble pId={1} color={prefs.color1} />
         <Bubble pId={2} color={prefs.color2} />

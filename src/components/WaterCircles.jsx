@@ -3,9 +3,9 @@ import { state } from "../state";
 import { useFrame } from "react-three-fiber";
 
 const initState = {
-  opacity: 1,
-  r1: 4,
-  r2: 4.8
+  opacity: 0.6,
+  r1: 3,
+  r2: 3.8
 };
 
 export function WaterCircles({ bullet }) {
@@ -32,7 +32,7 @@ export function WaterCircles({ bullet }) {
         { opacity: c2Opacity, r1: c2R1, r2: c2R2 } = c2NextState;
 
     setC1NextState({ opacity: c1Opacity - c1step, r1: c1R1 + c1step + 0.2, r2: c1R2 + c1step + 0.2 });
-    if (c1NextState.opacity < 0.6)
+    if (c1NextState.opacity < 0.3)
       setC2NextState({ opacity: c2Opacity - c2step, r1: c2R1 + c2step, r2: c2R2 + c2step });
   });
 
