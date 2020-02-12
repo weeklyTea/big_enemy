@@ -29,9 +29,18 @@ function movePlayer(pId, tDiff, setScore) {
       state.players[pId].moveDir.lerp(lookDir, alfa)
     }
   } else if (down) {
-    const d = state.players[pId].curSpeed * preferences.brakeCoef * tDiff
-    if (state.players[pId].curSpeed - d < 0 || d < 0.01) state.players[pId].curSpeed = 0
-    else state.players[pId].curSpeed -= d
+    const { lookDir, moveDir } = state.players[pId]
+    if (curSpeed + accel <= maxSpeed) {
+      state.players[pId].curSpeed += accel * tDiff;
+    }
+
+    const backDir = lookDir.clone().negate()
+    if (backDir.angleTo(moveDir) < 0.02) {
+      state.players[pId].moveDir.copy(backDir)
+    } else {
+      let alfa = curSpeed < 10 ? 1 : skiddingC * tDiff
+      state.players[pId].moveDir.lerp(backDir, alfa)
+    }
   } else if (!up && !down) {
     const d = state.players[pId].curSpeed * friction * tDiff
     if (state.players[pId].curSpeed - d < 0 || d < 0.01) state.players[pId].curSpeed = 0
