@@ -52,8 +52,8 @@ function movePlayer(pId, tDiff, setScore) {
     state.players[pId].position.setX(newX)
   } else if (
     radius <= preferences.minBubbleRadius + preferences.radiusPerBall * 4 &&
-    state.players[pId].position.y + radius < preferences.gateWidth / 2 &&
-    state.players[pId].position.y - radius > -preferences.gateWidth / 2) {
+    state.players[pId].position.y + radius < preferences.gateWidth / 2 + 2.5 &&
+    state.players[pId].position.y - radius > -preferences.gateWidth / 2 - 2.5) {
     // If radius is small enough allow to move through the gate
     state.players[pId].position.setX(newX)
   } else {
@@ -71,7 +71,7 @@ function movePlayer(pId, tDiff, setScore) {
 
   // Check if player win.
   const winMaxDepth = 40
-  const winMinDepth = 1
+  const winMinDepth = 0
   const winZone = new THREE.Box2(
     new THREE.Vector2(-preferences.fieldW / 2 - winMaxDepth, -30),
     new THREE.Vector2(-preferences.fieldW / 2 - winMinDepth, 30),
