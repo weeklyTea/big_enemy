@@ -5,7 +5,7 @@ export const preferences = {
   accel: 10,
   friction: 0.2, // Decrease curSpeed in 'friction' times each second.
   brakeCoef: 1,
-  bounceK: 0.5, // Decrease curSpeed after hiting the border
+  bounceK: 0.9, // Decrease curSpeed after hiting the border
   rotateSpeed: THREE.Math.degToRad(90),
   skiddingC: 0.8, // Should be dependent on player weight
   radiusPerBall: 1.5,
