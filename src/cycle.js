@@ -62,7 +62,8 @@ function movePlayer(pId, tDiff, setScore) {
   } else if (
     radius <= preferences.minBubbleRadius + preferences.radiusPerBall * 4 &&
     state.players[pId].position.y + radius < preferences.gateWidth / 2 + 2.5 &&
-    state.players[pId].position.y - radius > -preferences.gateWidth / 2 - 2.5) {
+    state.players[pId].position.y - radius > -preferences.gateWidth / 2 - 2.5 &&
+    newX < 0) {
     // If radius is small enough allow to move through the gate
     state.players[pId].position.setX(newX)
   } else {
