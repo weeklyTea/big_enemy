@@ -67,6 +67,7 @@ function movePlayer(pId, tDiff, setScore) {
     // If radius is small enough allow to move through the gate
     state.players[pId].position.setX(newX)
   } else {
+    // Friction 
     state.players[pId].moveDir.x *= -1
     state.players[pId].curSpeed *= preferences.bounceK
   }
@@ -75,6 +76,7 @@ function movePlayer(pId, tDiff, setScore) {
   if (newY + radius < upBorder && newY - radius > bottBorder) {
     state.players[pId].position.setY(newY)
   } else {
+    // Friction 
     state.players[pId].moveDir.y = -state.players[pId].moveDir.y
     state.players[pId].curSpeed *= preferences.bounceK
   }
@@ -181,6 +183,20 @@ function updateReloadings(pId, tDiff) {
   }).filter(time => time >= 0)
 }
 
+function collide() {
+  const player1 = state.players[1]
+  const player2 = state.players[2]
+
+  const allowedDist = getBubbleRadius(player1.balls) + getBubbleRadius(player2.balls)
+  if (player1.position.distanceTo(player2.position) < allowedDist) {
+    const diffVec = player2.position.clone().sub(player1.position)
+    const depth = allowedDist - diffVec.length()
+    diffVec.normalize()
+    player1.position.sub(diffVec.multiplyScalar(depth / 2))
+    player2.position.add(diffVec.multiplyScalar(depth / 2))
+  }
+}
+
 let t1 = performance.now();
 export const mainCycle = (forceUpdate, setScore) => function (t2) {
   const tDiff = (t2 - t1) / 1000; // Time diff between current and last frames in seconds
@@ -188,6 +204,7 @@ export const mainCycle = (forceUpdate, setScore) => function (t2) {
 
   movePlayer(1, tDiff, setScore)
   movePlayer(2, tDiff, setScore)
+  collide()
 
   updateReloadings(1, tDiff)
   updateReloadings(2, tDiff)
